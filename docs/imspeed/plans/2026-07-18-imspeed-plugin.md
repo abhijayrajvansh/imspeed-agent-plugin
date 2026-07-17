@@ -32,6 +32,7 @@
 - `.codex-plugin/plugin.json`: Codex plugin identity and skill discovery.
 - `package.json`: Node version and test/generation commands.
 - `README.md`: installation, activation, model map, and limitations.
+- `docs/imspeed/maintenance.md`: source-of-truth paths and the exact future edit, sync, cachebuster, reinstall, and new-thread workflow.
 - `LICENSE`: upstream MIT license text copied unchanged.
 - `NOTICE.md`: fork attribution and local modifications.
 
@@ -1318,9 +1319,11 @@ git commit -m "feat: add IMSpeed performance qualification"
 
 **Files:**
 - Modify outside repository: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
+- Sync outside repository: `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed/`
 - Install outside repository: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed/<version>/`
 - Install outside repository: `$CODEX_HOME/agents/imspeed-*.toml`
 - Install outside repository: `$CODEX_HOME/imspeed.config.toml`
+- Create: `docs/imspeed/maintenance.md`
 - Modify: `README.md`
 
 **Interfaces:**
@@ -1340,14 +1343,14 @@ Expected: tests PASS and the worktree is clean.
 
 - [ ] **Step 2: Use the plugin-creator cachebuster and personal-marketplace workflow**
 
-Invoke the `plugin-creator` skill for the current Codex version. Register IMSpeed in the existing `personal` marketplace with:
+Invoke the `plugin-creator` skill for the current Codex version. Sync the tested Desktop repository into `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed/`, then register IMSpeed in the existing `personal` marketplace with the required relative source:
 
 ```json
 {
   "name": "imspeed",
   "source": {
     "source": "local",
-    "path": "/Users/abhijayrajvansh/Desktop/imspeed"
+    "path": "./plugins/imspeed"
   },
   "policy": {
     "installation": "AVAILABLE",
@@ -1357,7 +1360,7 @@ Invoke the `plugin-creator` skill for the current Codex version. Register IMSpee
 }
 ```
 
-The plugin-creator skill owns the exact remove/re-add or cachebuster command required by the installed Codex build. Do not edit cache files directly.
+The plugin-creator skill owns marketplace creation and the exact cachebuster/reinstall command required by the installed Codex build. Do not edit cache files directly. The Desktop repository remains the editable source of truth; the personal marketplace directory is an installable release mirror.
 
 - [ ] **Step 3: Install the custom agents and coordinator profile**
 
@@ -1399,7 +1402,63 @@ multi-file integration.
 
 Expected response: starts with `imspeed-implementer-fast` using `gpt-5.6-luna` + `medium`, and escalates to `imspeed-implementer-standard` using `gpt-5.6-terra` + `medium`.
 
-- [ ] **Step 6: Complete the README**
+- [ ] **Step 6: Write the future maintenance guide**
+
+Create `docs/imspeed/maintenance.md`:
+
+```markdown
+# Maintaining IMSpeed
+
+## Locations
+
+- Editable source of truth: `/Users/abhijayrajvansh/Desktop/imspeed`
+- Personal marketplace release mirror: `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed`
+- Personal marketplace manifest: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
+- Codex runtime cache: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed`
+
+Never edit the runtime cache. Make every improvement in the Desktop repository
+on a feature branch or worktree, run the test suite, and commit it first.
+
+## Update loop
+
+1. Edit `/Users/abhijayrajvansh/Desktop/imspeed`.
+2. Run `npm test` and commit the verified change.
+3. Sync the release into the personal marketplace mirror while excluding
+   `.git`, `.worktrees`, and `.superpowers` scratch data.
+4. From the `plugin-creator` skill directory, run:
+
+   ```bash
+   python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/.agents/plugins/plugins/imspeed
+   ```
+
+5. Read the default personal marketplace name:
+
+   ```bash
+   python3 scripts/read_marketplace_name.py
+   ```
+
+6. Reinstall from the reported marketplace name, normally `personal`:
+
+   ```bash
+   codex plugin add imspeed@personal
+   ```
+
+7. Start a new Codex thread so the updated skills and agent configuration are
+   loaded.
+
+The cachebuster helper preserves the base version and replaces only the
+`+codex.<token>` suffix. Do not manually edit `marketplace.json`, Codex plugin
+cache files, or the base user `config.toml` during routine updates.
+
+## Improving routing
+
+Change the role matrix in `src/agent-definitions.mjs`, regenerate profiles with
+`npm run generate:agents`, and update `references/routing-policy.md` in the same
+commit. Add or update routing tests before changing behavior. Use benchmark
+evidence, not intuition alone, before making a slower model the default.
+```
+
+- [ ] **Step 7: Complete the README**
 
 Replace the implementation status section with installation and usage commands:
 
@@ -1427,9 +1486,11 @@ npm test
 
 Full performance qualification requires the controlled benchmark procedure in
 `benchmarks/README.md` and explicit approval for the model-token spend.
+
+Future updates are documented in `docs/imspeed/maintenance.md`.
 ```
 
-- [ ] **Step 7: Run final verification**
+- [ ] **Step 8: Run final verification**
 
 Run:
 
@@ -1440,13 +1501,13 @@ git status --short
 
 Expected: all tests PASS; only the intended README change is uncommitted.
 
-- [ ] **Step 8: Commit installation documentation**
+- [ ] **Step 9: Commit installation documentation**
 
 ```bash
-git add README.md
+git add README.md docs/imspeed/maintenance.md
 git commit -m "docs: document IMSpeed installation and usage"
 ```
 
-- [ ] **Step 9: Stop before paid benchmark qualification**
+- [ ] **Step 10: Stop before paid benchmark qualification**
 
 Present the static-test and smoke-test evidence to the user and ask for explicit approval before running the three-by-three Superpowers and IMSpeed benchmark matrix. If approved, create `benchmarks/results.jsonl`, run `node scripts/summarize-benchmark.mjs benchmarks/results.jsonl`, and report qualification without changing the acceptance thresholds.
