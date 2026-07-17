@@ -10,6 +10,10 @@ const tokenized = (text, token) => {
 };
 
 test("task 9 maintenance guide captures immutable source and update workflow", async () => {
+  assert.ok(
+    maintenance.includes("/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed"),
+    "maintenance should include exact local marketplace mirror path",
+  );
   assert.ok(maintenance.includes("/Users/abhijayrajvansh/Desktop/imspeed"));
   assert.ok(maintenance.includes("Run `npm test` on the source checkout"));
   for (const token of [".git", ".worktrees", ".superpowers"]) {
@@ -19,9 +23,10 @@ test("task 9 maintenance guide captures immutable source and update workflow", a
     );
   }
   assert.ok(
-    /keep.*relative/i.test(maintenance) && maintenance.includes("./plugins/imspeed"),
+    /keep[\s\S]{0,120}relative/i.test(maintenance),
     "maintenance should keep marketplace source path relative as ./plugins/imspeed",
   );
+  assert.ok(maintenance.includes("./plugins/imspeed"), "maintenance should include exact marketplace source token ./plugins/imspeed");
   assert.ok(maintenance.includes("scripts/update_plugin_cachebuster.py"));
   assert.ok(maintenance.includes("scripts/read_marketplace_name.py"));
   assert.ok(maintenance.includes("codex plugin add imspeed@personal"));
