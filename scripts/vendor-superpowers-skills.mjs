@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -45,6 +45,10 @@ export async function vendorSkills(sourceRoot, destinationRoot, skills = DEFAULT
     const destination = path.join(destinationRoot, destinationName);
     await cp(source, destination, { recursive: true, force: true });
     await transformTree(destination);
+    if (destinationName === "using-imspeed") {
+      await rm(path.join(destination, "references", "pi-tools.md"), { force: true });
+      await rm(path.join(destination, "references", "antigravity-tools.md"), { force: true });
+    }
   }
 }
 

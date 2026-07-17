@@ -1,6 +1,6 @@
 ---
 name: using-imspeed
-description: Use when the user explicitly asks to use IMSpeed or starts an IMSpeed feature workflow; establishes mandatory IMSpeed skill routing before any implementation action
+description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
 ---
 
 <SUBAGENT-STOP>
@@ -49,12 +49,13 @@ These thoughts mean STOP—you're rationalizing:
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
 
-## Platform
+## Platform Adaptation
 
-IMSpeed 0.1.0 supports Codex custom-agent surfaces only. Read
-`references/codex-tools.md` for Codex tool mappings. If named custom agents or
-explicit model and effort fields are unavailable, stop and explain that this
-harness cannot preserve IMSpeed's routing guarantees.
+If your harness appears here, read its reference file for special instructions:
+
+- Codex: `references/codex-tools.md`
+- Pi: `references/pi-tools.md`
+- Antigravity: `references/antigravity-tools.md`
 
 ## User Instructions
 
