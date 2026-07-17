@@ -5,13 +5,28 @@ workflow. It keeps brainstorming, planning, worktrees, TDD, scoped review,
 verification, and branch completion while assigning each substantive task to
 a named agent with an explicit model and reasoning effort.
 
-## Status
+## Install role agents
 
-Version 0.1.0 is under implementation. See the approved design in
-`docs/imspeed/specs/2026-07-18-imspeed-multi-model-routing-design.md`.
+```bash
+bash scripts/install-agents.sh
+```
 
-## Compatibility
+Start Codex with the Sol-low coordinator profile:
 
-IMSpeed requires a Codex surface that supports custom agents with `model` and
-`model_reasoning_effort`. Exact model availability depends on the user's
-account. Superpowers remains a separate, unchanged plugin.
+```bash
+codex --profile imspeed -C /path/to/project
+```
+
+Then ask: `Use IMSpeed to build this feature.` IMSpeed keeps Superpowers
+installed separately and routes substantive work through explicit named agents.
+
+## Verify
+
+```bash
+npm test
+```
+
+Full performance qualification requires the controlled benchmark procedure in
+`benchmarks/README.md` and explicit approval for the model-token spend.
+
+Future updates are documented in `docs/imspeed/maintenance.md`.
