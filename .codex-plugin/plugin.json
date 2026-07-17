@@ -1,0 +1,32 @@
+{
+  "name": "imspeed",
+  "version": "0.1.0",
+  "description": "A model-routed software development workflow with planning, TDD, adaptive subagents, review, and delivery gates.",
+  "author": {
+    "name": "Abhijay Rajvansh"
+  },
+  "license": "MIT",
+  "keywords": [
+    "multi-agent",
+    "model-routing",
+    "planning",
+    "tdd",
+    "code-review",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "IMSpeed",
+    "shortDescription": "Fast model-routed planning, coding, testing, and review",
+    "longDescription": "Use IMSpeed to route architecture, planning, implementation, debugging, and review to named Codex agents with explicit models, reasoning efforts, and bounded escalation.",
+    "developerName": "Abhijay Rajvansh",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "defaultPrompt": [
+      "Use IMSpeed to build this feature.",
+      "Run the IMSpeed workflow for this change."
+    ],
+    "brandColor": "#0B6E4F",
+    "screenshots": []
+  }
+}

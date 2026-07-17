@@ -1,0 +1,14 @@
+{
+  "name": "imspeed",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "generate:agents": "node scripts/generate-agent-profiles.mjs",
+    "validate": "node scripts/validate-plugin.mjs",
+    "test": "bash tests/run-tests.sh"
+  }
+}
