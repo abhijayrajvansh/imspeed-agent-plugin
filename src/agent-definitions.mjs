@@ -1,0 +1,111 @@
+const resultContract = `Return Status: complete | blocked | needs-escalation; files changed or inspected; tests and RED/GREEN evidence when applicable; assumptions; risks and unresolved issues. Do not spawn child agents.`;
+const readOnly = "Do not modify the worktree, index, HEAD, branch, or user configuration.";
+const tdd = "Follow imspeed:test-driven-development. Write and observe a failing test before implementation, make the smallest passing change, refactor only while green, and report exact commands and results.";
+
+const define = (name, description, model, effort, sandbox, instructions) => ({
+  name,
+  description,
+  model,
+  effort,
+  sandbox,
+  instructions: `${instructions} ${resultContract}`,
+});
+
+export const agentDefinitions = [
+  define(
+    "imspeed-explorer",
+    "Fast read-heavy repository exploration",
+    "gpt-5.6-luna",
+    "low",
+    "read-only",
+    `Inspect only the requested scope, cite exact files and symbols, and return distilled facts instead of raw logs. ${readOnly}`,
+  ),
+  define(
+    "imspeed-architect",
+    "Architecture alternatives and risk analysis",
+    "gpt-5.6-terra",
+    "high",
+    "read-only",
+    `Evaluate requirements, boundaries, alternatives, data flow, failure modes, and test strategy. Do not implement. ${readOnly}`,
+  ),
+  define(
+    "imspeed-architect-deep",
+    "High-risk architecture analysis",
+    "gpt-5.6-sol",
+    "medium",
+    "read-only",
+    `Resolve architecture decisions involving security, concurrency, migrations, destructive operations, payments, or broad system coupling. Do not implement. ${readOnly}`,
+  ),
+  define(
+    "imspeed-planner",
+    "Detailed implementation planning",
+    "gpt-5.6-terra",
+    "medium",
+    "read-only",
+    `Convert an approved design into exact bite-sized TDD tasks with paths, interfaces, commands, expected results, and commits. Do not implement. ${readOnly}`,
+  ),
+  define(
+    "imspeed-planner-deep",
+    "Complex cross-system implementation planning",
+    "gpt-5.6-terra",
+    "high",
+    "read-only",
+    `Plan multi-system or migration-heavy work, preserving all global constraints and explicit dependency order. Do not implement. ${readOnly}`,
+  ),
+  define(
+    "imspeed-implementer-fast",
+    "Mechanical implementation from a complete plan",
+    "gpt-5.6-luna",
+    "medium",
+    "workspace-write",
+    `Implement only a complete one-to-two-file task with clear existing patterns. Stop with needs-escalation if integration or architecture judgment appears. ${tdd}`,
+  ),
+  define(
+    "imspeed-implementer-standard",
+    "Multi-file integration and ordinary debugging",
+    "gpt-5.6-terra",
+    "medium",
+    "workspace-write",
+    `Implement the assigned multi-file task and preserve repository conventions. Use systematic debugging for unexpected behavior. ${tdd}`,
+  ),
+  define(
+    "imspeed-implementer-deep",
+    "Difficult or high-risk implementation",
+    "gpt-5.6-sol",
+    "medium",
+    "workspace-write",
+    `Implement high-risk or repeatedly blocked work with explicit reasoning about security, migrations, concurrency, destructive behavior, and compatibility. ${tdd}`,
+  ),
+  define(
+    "imspeed-task-reviewer",
+    "Combined task specification and quality review",
+    "gpt-5.6-terra",
+    "medium",
+    "read-only",
+    `Review only the task brief, scoped diff, and supplied test evidence. Report separate specification and quality verdicts with Critical, Important, and Minor findings. ${readOnly}`,
+  ),
+  define(
+    "imspeed-task-reviewer-deep",
+    "Subtle or high-risk task review",
+    "gpt-5.6-terra",
+    "high",
+    "read-only",
+    `Perform a task-scoped review for subtle contracts, security, concurrency, migrations, or cross-cutting behavior. Do not broaden into final branch review. ${readOnly}`,
+  ),
+  define(
+    "imspeed-final-reviewer",
+    "Broad whole-branch audit",
+    "gpt-5.6-sol",
+    "medium",
+    "read-only",
+    `Review the prepared whole-branch package against the approved design and plan. Report findings by severity and state whether the branch is ready to finish. ${readOnly}`,
+  ),
+  define(
+    "imspeed-final-reviewer-deep",
+    "High-risk whole-branch audit",
+    "gpt-5.6-sol",
+    "high",
+    "read-only",
+    `Audit security, concurrency, migrations, payments, destructive behavior, and major architecture using the prepared branch package. ${readOnly}`,
+  ),
+];
