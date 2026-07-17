@@ -1319,7 +1319,7 @@ git commit -m "feat: add IMSpeed performance qualification"
 
 **Files:**
 - Modify outside repository: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
-- Sync outside repository: `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed/`
+- Sync outside repository: `/Users/abhijayrajvansh/plugins/imspeed/`
 - Install outside repository: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed/<version>/`
 - Install outside repository: `$CODEX_HOME/agents/imspeed-*.toml`
 - Install outside repository: `$CODEX_HOME/imspeed.config.toml`
@@ -1343,7 +1343,7 @@ Expected: tests PASS and the worktree is clean.
 
 - [ ] **Step 2: Use the plugin-creator cachebuster and personal-marketplace workflow**
 
-Invoke the `plugin-creator` skill for the current Codex version. Sync the tested Desktop repository into `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed/`, then register IMSpeed in the existing `personal` marketplace with the required relative source:
+Invoke the `plugin-creator` skill for the current Codex version. Sync the tested Desktop repository into `/Users/abhijayrajvansh/plugins/imspeed/`, then register IMSpeed in the existing `personal` marketplace with the required relative source. Codex resolves that source from the personal marketplace root `/Users/abhijayrajvansh`, not from the manifest directory:
 
 ```json
 {
@@ -1412,7 +1412,7 @@ Create `docs/imspeed/maintenance.md`:
 ## Locations
 
 - Editable source of truth: `/Users/abhijayrajvansh/Desktop/imspeed`
-- Personal marketplace release mirror: `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed`
+- Personal marketplace release mirror: `/Users/abhijayrajvansh/plugins/imspeed`
 - Personal marketplace manifest: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
 - Codex runtime cache: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed`
 
@@ -1428,7 +1428,7 @@ on a feature branch or worktree, run the test suite, and commit it first.
 4. From the `plugin-creator` skill directory, run:
 
    ```bash
-   python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/.agents/plugins/plugins/imspeed
+   python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/plugins/imspeed
    ```
 
 5. Read the default personal marketplace name:

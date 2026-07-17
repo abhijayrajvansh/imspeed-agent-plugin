@@ -4,6 +4,17 @@ import test from "node:test";
 
 const maintenance = await readFile(new URL("../docs/imspeed/maintenance.md", import.meta.url), "utf8");
 const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
+const plan = await readFile(
+  new URL("../docs/imspeed/plans/2026-07-18-imspeed-plugin.md", import.meta.url),
+  "utf8",
+);
+const design = await readFile(
+  new URL("../docs/imspeed/specs/2026-07-18-imspeed-multi-model-routing-design.md", import.meta.url),
+  "utf8",
+);
+
+const marketplaceMirror = "/Users/abhijayrajvansh/plugins/imspeed";
+const obsoleteMarketplaceMirror = "/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed";
 
 const tokenized = (text, token) => {
   return text.includes(`\`${token}\``) || text.includes(token);
@@ -11,8 +22,8 @@ const tokenized = (text, token) => {
 
 test("task 9 maintenance guide captures immutable source and update workflow", async () => {
   assert.ok(
-    maintenance.includes("/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed"),
-    "maintenance should include exact local marketplace mirror path",
+    maintenance.includes(marketplaceMirror),
+    `maintenance should include exact resolved marketplace mirror ${marketplaceMirror}`,
   );
   assert.ok(maintenance.includes("/Users/abhijayrajvansh/Desktop/imspeed"));
   assert.ok(maintenance.includes("Run `npm test` on the source checkout"));
@@ -43,6 +54,14 @@ test("task 9 maintenance guide captures immutable source and update workflow", a
   assert.ok(
     maintenance.includes("installed copies"),
     "maintenance should warn not to hand-edit installed copies",
+  );
+});
+
+test("task 9 operational docs reject the manifest-relative mirror bug", () => {
+  const operationalDocs = [maintenance, readme, plan, design].join("\n");
+  assert.ok(
+    !operationalDocs.includes(obsoleteMarketplaceMirror),
+    `operational docs should reject obsolete mirror ${obsoleteMarketplaceMirror}`,
   );
 });
 

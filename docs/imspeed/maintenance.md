@@ -3,9 +3,13 @@
 ## Locations
 
 - Editable source of truth: `/Users/abhijayrajvansh/Desktop/imspeed`
-- Personal marketplace release mirror: `/Users/abhijayrajvansh/.agents/plugins/plugins/imspeed`
+- Personal marketplace release mirror: `/Users/abhijayrajvansh/plugins/imspeed`
 - Personal marketplace manifest: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
 - Codex runtime cache: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed`
+
+Codex resolves the manifest's relative `source.path` from the personal
+marketplace root `/Users/abhijayrajvansh`, not from the manifest's
+`.agents/plugins` directory. Keep that path relative as `./plugins/imspeed`.
 
 Do not hand-edit the marketplace manifest, runtime cache, marketplace config, or
 installed copies in this repository.
@@ -18,7 +22,7 @@ installed copies in this repository.
 3. Sync changes into the personal marketplace mirror while excluding:
    `.git`, `.worktrees`, and `.superpowers`.
 4. In `plugin-creator` tooling, run:
-   - `python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/.agents/plugins/plugins/imspeed`
+   - `python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/plugins/imspeed`
    - `python3 scripts/read_marketplace_name.py`
    - keep the marketplace source path relative as `./plugins/imspeed`.
 5. Reinstall the plugin from the reported marketplace name:
