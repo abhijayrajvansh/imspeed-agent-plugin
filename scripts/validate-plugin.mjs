@@ -4,12 +4,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { agentDefinitions } from "../src/agent-definitions.mjs";
 import { renderAgentToml } from "./generate-agent-profiles.mjs";
+import { DEFAULT_SKILLS } from "./vendor-superpowers-skills.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(root, "..");
-const errors = [];
+const repositoryRoot = path.resolve(root, "..");
+const REQUIRED_SKILL_DIRECTORIES = DEFAULT_SKILLS.map((name) =>
+  name === "using-superpowers" ? "using-imspeed" : name,
+).sort();
 
-const check = async (label, operation) => {
+const check = async (label, operation, errors) => {
   try {
     await operation();
   } catch (error) {
@@ -17,64 +20,92 @@ const check = async (label, operation) => {
   }
 };
 
-await check("manifest", async () => {
-  const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
-  const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-  assert.equal(manifest.name, "imspeed");
-  assert.equal(manifest.skills, "./skills/");
-});
+export async function validatePlugin(targetRoot = repositoryRoot) {
+  const errors = [];
 
-await check("generated agents", async () => {
-  const expectedFiles = new Set(agentDefinitions.map((definition) => `${definition.name}.toml`));
-  const agentsDir = path.join(repoRoot, "agents");
-  const installed = new Set((await readdir(agentsDir)).filter((entry) => entry.endsWith(".toml")));
+  await check("manifest", async () => {
+    const manifestPath = path.join(targetRoot, ".codex-plugin", "plugin.json");
+    const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+    assert.equal(manifest.name, "imspeed");
+    assert.equal(manifest.skills, "./skills/");
+  }, errors);
 
-  for (const file of expectedFiles) {
-    assert.ok(
-      installed.has(file),
-      `missing generated profile: ${file}`,
-    );
-  }
+  await check("generated agents", async () => {
+    const expectedFiles = new Set(agentDefinitions.map((definition) => `${definition.name}.toml`));
+    const agentsDir = path.join(targetRoot, "agents");
+    const installed = new Set((await readdir(agentsDir)).filter((entry) => entry.endsWith(".toml")));
 
-  for (const file of installed) {
-    if (!expectedFiles.has(file)) {
-      throw new Error(`unexpected generated profile: ${file}`);
+    for (const file of expectedFiles) {
+      assert.ok(installed.has(file), `missing generated profile: ${file}`);
     }
-  }
 
-  for (const definition of agentDefinitions) {
-    const file = path.join(agentsDir, `${definition.name}.toml`);
-    const text = await readFile(file, "utf8");
-    assert.equal(text, renderAgentToml(definition));
-  }
-});
+    for (const file of installed) {
+      if (!expectedFiles.has(file)) {
+        throw new Error(`unexpected generated profile: ${file}`);
+      }
+    }
 
-await check("skill namespace", async () => {
-  const required = [
-    "brainstorming",
-    "writing-plans",
-    "subagent-driven-development",
-    "using-imspeed",
-  ];
-  for (const name of required) {
-    await access(path.join(repoRoot, "skills", name, "SKILL.md"));
-  }
-  const entry = await readFile(path.join(repoRoot, "skills", "using-imspeed", "SKILL.md"), "utf8");
-  assert.doesNotMatch(entry, /superpowers:/);
-  assert.match(entry, /imspeed:/);
-});
+    for (const definition of agentDefinitions) {
+      const file = path.join(agentsDir, `${definition.name}.toml`);
+      const text = await readFile(file, "utf8");
+      assert.equal(text, renderAgentToml(definition));
+    }
+  }, errors);
 
-await check("coordinator", async () => {
-  const config = await readFile(path.join(repoRoot, "config", "imspeed.config.toml"), "utf8");
-  assert.match(config, /gpt-5\.6-sol/);
-  assert.match(config, /model_reasoning_effort = "low"/);
-});
+  await check("skill namespace", async () => {
+    const skillsRoot = path.join(targetRoot, "skills");
+    const skillDirectories = (await readdir(skillsRoot, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
+      .map((entry) => entry.name)
+      .sort();
 
-if (errors.length) {
-  for (const error of errors) {
-    console.error(error);
-  }
-  process.exit(1);
+    const skillSet = new Set(skillDirectories);
+    const requiredMissing = REQUIRED_SKILL_DIRECTORIES.filter((name) => !skillSet.has(name));
+    const skillSetExpected = new Set(REQUIRED_SKILL_DIRECTORIES);
+    const unexpected = skillDirectories.filter((name) => !skillSetExpected.has(name));
+
+    if (requiredMissing.length) {
+      throw new Error(`missing required skill directories: ${requiredMissing.join(", ")}`);
+    }
+    if (unexpected.length) {
+      throw new Error(`unsupported skill directories: ${unexpected.join(", ")}`);
+    }
+
+    for (const name of REQUIRED_SKILL_DIRECTORIES) {
+      const skillPath = path.join(skillsRoot, name, "SKILL.md");
+      await access(skillPath);
+      const text = await readFile(skillPath, "utf8");
+      assert.doesNotMatch(text, /\bsuperpowers:/);
+      if (name === "using-imspeed") {
+        assert.match(text, /imspeed:/);
+      }
+    }
+  }, errors);
+
+  await check("coordinator", async () => {
+    const config = await readFile(path.join(targetRoot, "config", "imspeed.config.toml"), "utf8");
+    assert.match(config, /model = "gpt-5\.6-sol"/);
+    assert.match(config, /model_reasoning_effort = "low"/);
+    if (!/^\s*max_threads = 4\s*$/m.test(config)) {
+      throw new Error("agents.max_threads must be 4");
+    }
+    if (!/^\s*max_depth = 1\s*$/m.test(config)) {
+      throw new Error("agents.max_depth must be 1");
+    }
+  }, errors);
+
+  return { valid: errors.length === 0, errors };
 }
 
-console.log("IMSpeed validation passed");
+const isMain = fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "");
+if (isMain) {
+  const result = await validatePlugin();
+  if (result.valid) {
+    console.log("IMSpeed validation passed");
+  } else {
+    for (const error of result.errors) {
+      console.error(error);
+    }
+    process.exit(1);
+  }
+}
