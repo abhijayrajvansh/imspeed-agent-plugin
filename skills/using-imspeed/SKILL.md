@@ -1,6 +1,6 @@
 ---
 name: using-imspeed
-description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
+description: Use when the user explicitly asks to use IMSpeed or starts an IMSpeed feature workflow; establishes mandatory IMSpeed skill routing before any implementation action
 ---
 
 <SUBAGENT-STOP>
@@ -25,7 +25,7 @@ Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it h
 
 ## Skill Priority
 
-When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are IMSpeed' most common process skills, but the rule holds for any of them.
+When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are IMSpeed's most common process skills, but the rule holds for any of them.
 
 - "Let's build X" → imspeed:brainstorming first, then implementation skills.
 - "Fix this bug" → imspeed:systematic-debugging first, then domain skills.
@@ -49,14 +49,12 @@ These thoughts mean STOP—you're rationalizing:
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
 
-## Platform Adaptation
+## Platform
 
-If your harness appears here, read its reference file for special instructions:
-
-- Codex: `references/codex-tools.md`
-- Pi: `references/pi-tools.md`
-- Antigravity: `references/antigravity-tools.md`
-
+IMSpeed 0.1.0 supports Codex custom-agent surfaces only. Read
+`references/codex-tools.md` for Codex tool mappings. If named custom agents or
+explicit model and effort fields are unavailable, stop and explain that this
+harness cannot preserve IMSpeed's routing guarantees.
 ## User Instructions
 
 User instructions (CLAUDE.md, AGENTS.md, GEMINI.md, etc, direct requests) take precedence over skills, which in turn override default behavior. Only skip skill workflows or instructions when your human partner has explicitly told you to.

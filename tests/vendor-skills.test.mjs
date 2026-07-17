@@ -14,7 +14,14 @@ test("vendorSkills renames the entry skill and namespace", async () => {
   await mkdir(path.join(source, "skills", "brainstorming"), { recursive: true });
   await writeFile(
     path.join(source, "skills", "using-superpowers", "SKILL.md"),
-    "name: using-superpowers\nUse superpowers:brainstorming and docs/superpowers/specs.\n",
+    "name: using-superpowers\n" +
+      "description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions\n" +
+      "Use superpowers:brainstorming and docs/superpowers/specs.\n\n" +
+      "## Platform Adaptation\n\n" +
+      "- Codex: `references/codex-tools.md`\n" +
+      "- Pi: `references/pi-tools.md`\n" +
+      "- Antigravity: `references/antigravity-tools.md`\n\n" +
+      "## User Instructions\n\nIMSpeed' routing applies.\n",
   );
   await writeFile(
     path.join(source, "skills", "brainstorming", "SKILL.md"),
@@ -42,8 +49,18 @@ test("vendorSkills renames the entry skill and namespace", async () => {
     "utf8",
   );
   assert.match(entry, /name: using-imspeed/);
+  assert.match(
+    entry,
+    /description: Use when the user explicitly asks to use IMSpeed or starts an IMSpeed feature workflow; establishes mandatory IMSpeed skill routing before any implementation action/,
+  );
   assert.match(entry, /imspeed:brainstorming/);
   assert.match(entry, /docs\/imspeed\/specs/);
+  assert.match(
+    entry,
+    /## Platform\n\nIMSpeed 0\.1\.0 supports Codex custom-agent surfaces only\. Read\n`references\/codex-tools\.md` for Codex tool mappings\. If named custom agents or\nexplicit model and effort fields are unavailable, stop and explain that this\nharness cannot preserve IMSpeed's routing guarantees\./,
+  );
+  assert.doesNotMatch(entry, /## Platform Adaptation|references\/pi-tools\.md|references\/antigravity-tools\.md/);
+  assert.match(entry, /IMSpeed's routing applies/);
   assert.match(brainstorm, /IMSpeed uses imspeed:writing-plans/);
   assert.doesNotMatch(entry + brainstorm, /superpowers:/);
   assert.equal(codex, "Codex tools\n");
