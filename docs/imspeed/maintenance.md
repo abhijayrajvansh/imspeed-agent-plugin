@@ -7,8 +7,8 @@
 - Personal marketplace manifest: `/Users/abhijayrajvansh/.agents/plugins/marketplace.json`
 - Codex runtime cache: `/Users/abhijayrajvansh/.codex/plugins/cache/personal/imspeed`
 
-Do not hand-edit the marketplace manifest, runtime cache, installed plugins, or
-installed agent profiles in this repository.
+Do not hand-edit the marketplace manifest, runtime cache, marketplace config, or
+installed copies in this repository.
 
 ## Update loop
 
@@ -20,7 +20,7 @@ installed agent profiles in this repository.
 4. In `plugin-creator` tooling, run:
    - `python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/.agents/plugins/plugins/imspeed`
    - `python3 scripts/read_marketplace_name.py`
-   - keep the marketplace source path as `./plugins/imspeed`.
+   - keep the marketplace source path relative as `./plugins/imspeed`.
 5. Reinstall the plugin from the reported marketplace name:
    `codex plugin add imspeed@personal`
 6. Open a new Codex thread so IMSpeed's updated skills and agent configuration are
