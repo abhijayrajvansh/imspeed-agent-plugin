@@ -7,6 +7,15 @@ description: Use when the user explicitly asks to use IMSpeed or starts an IMSpe
 If you were dispatched as a subagent to execute a specific task, ignore this skill.
 </SUBAGENT-STOP>
 
+## Required model routing
+
+Before dispatching a subagent, read `../../references/routing-policy.md` and
+`../../references/handoff-contracts.md`. Every dispatch must name an `imspeed-*` role explicitly. Missing or unavailable profiles are configuration errors: stop and report them rather than inheriting the coordinator model.
+
+The user-facing coordinator should run on the `imspeed` Codex profile
+(`gpt-5.6-sol`, low effort). A skill cannot claim to switch the current parent
+model on a surface that does not support profile switching.
+
 <EXTREMELY-IMPORTANT>
 If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
 

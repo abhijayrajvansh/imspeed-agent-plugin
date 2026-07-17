@@ -11,6 +11,9 @@ Random fixes waste time and create new bugs. Quick patches mask underlying issue
 
 **Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
 
+Ordinary multi-file debugging uses `imspeed-implementer-standard`. Escalate to
+`imspeed-implementer-deep` only after evidence meets the shared routing policy.
+
 **Violating the letter of this process is violating the spirit of debugging.**
 
 ## The Iron Law

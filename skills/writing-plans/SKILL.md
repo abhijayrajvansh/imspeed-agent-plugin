@@ -3,6 +3,15 @@ name: writing-plans
 description: Use when you have a spec or requirements for a multi-step task, before touching code
 ---
 
+## IMSpeed planner dispatch
+
+Dispatch `imspeed-planner` with the approved design and global constraints to
+draft the implementation plan. Use `imspeed-planner-deep` only for multi-system
+or migration-heavy plans. The coordinator self-reviews the returned plan and
+writes the final plan document. Execution handoff defaults to
+`imspeed:subagent-driven-development`; do not offer inline implementation as
+the normal IMSpeed path.
+
 # Writing Plans
 
 ## Overview

@@ -17,6 +17,15 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
+## IMSpeed architect dispatch
+
+The coordinator owns questions and approval gates. For every non-trivial
+feature, dispatch `imspeed-architect` with the current requirements and project
+facts before presenting approaches. Use `imspeed-architect-deep` only when the
+routing policy's high-risk criteria apply or ordinary architecture remains
+unresolved. The coordinator, not the subagent, presents and validates the
+design with the user.
+
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:

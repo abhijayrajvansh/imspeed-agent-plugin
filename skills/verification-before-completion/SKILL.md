@@ -3,6 +3,12 @@ name: verification-before-completion
 description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
 ---
 
+## IMSpeed execution owner
+
+This is a coordinator operation. Do not spawn a separate agent merely to run
+deterministic verification commands or present branch-completion choices.
+Subagents supply evidence; the coordinator evaluates the final result.
+
 # Verification Before Completion
 
 ## Overview

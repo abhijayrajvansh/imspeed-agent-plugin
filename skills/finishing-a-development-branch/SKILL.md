@@ -3,6 +3,12 @@ name: finishing-a-development-branch
 description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
 ---
 
+## IMSpeed execution owner
+
+This is a coordinator operation. Do not spawn a separate agent merely to run
+deterministic verification commands or present branch-completion choices.
+Subagents supply evidence; the coordinator evaluates the final result.
+
 # Finishing a Development Branch
 
 ## Overview

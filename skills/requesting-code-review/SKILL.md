@@ -9,6 +9,10 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 
 **Core principle:** Review early, review often.
 
+Task-scoped review uses `imspeed-task-reviewer` or its deep variant. Broad final
+review uses `imspeed-final-reviewer` or its deep variant. Review agents are
+read-only and consume prepared packages.
+
 ## When to Request Review
 
 **Mandatory:**
