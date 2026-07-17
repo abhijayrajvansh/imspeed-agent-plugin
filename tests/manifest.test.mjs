@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { access } from "node:fs/promises";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -19,4 +20,22 @@ test("fork attribution is present", async () => {
   assert.match(notice, /Superpowers 6\.1\.1/);
   assert.match(notice, /Jesse Vincent/);
   assert.match(notice, /MIT/);
+});
+
+test("all required IMSpeed skills are present", async () => {
+  const names = [
+    "brainstorming",
+    "dispatching-parallel-agents",
+    "finishing-a-development-branch",
+    "receiving-code-review",
+    "requesting-code-review",
+    "subagent-driven-development",
+    "systematic-debugging",
+    "test-driven-development",
+    "using-git-worktrees",
+    "using-imspeed",
+    "verification-before-completion",
+    "writing-plans",
+  ];
+  await Promise.all(names.map((name) => access(new URL(`../skills/${name}/SKILL.md`, import.meta.url))));
 });
