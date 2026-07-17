@@ -1,6 +1,6 @@
 # IMSpeed Plugin Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use imspeed:subagent-driven-development (recommended) or imspeed:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build and install a Codex-only IMSpeed personal plugin that preserves the Superpowers development workflow while routing each substantive task to an explicitly model-pinned role agent with bounded adaptive escalation.
 

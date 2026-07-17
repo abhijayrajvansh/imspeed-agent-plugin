@@ -1,5 +1,15 @@
 # IMSpeed Handoff Contracts
 
+## Runtime workspace
+
+All scratch handoff artifacts live under `.superpowers/sdd` in the current
+working tree. The canonical paths are:
+
+- Progress ledger: `.superpowers/sdd/progress.md`
+- Task brief: `.superpowers/sdd/task-<N>-brief.md`
+- Implementer report: `.superpowers/sdd/task-<N>-report.md`
+- Review package: `.superpowers/sdd/review-<base7>..<head7>.diff`
+
 ## Task brief
 
 Every dispatch contains:

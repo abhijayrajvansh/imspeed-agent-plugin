@@ -48,6 +48,8 @@ For final review: `imspeed-final-reviewer` or `imspeed-final-reviewer-deep`
 
 Fill the template at [code-reviewer.md](code-reviewer.md) with the exact task
 brief, progress-ledger location, and handoff contract files.
+Prepared briefs, reports, review packages, and the ledger live under the
+canonical `.superpowers/sdd` workspace defined by the handoff contract.
 
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built
@@ -76,8 +78,8 @@ HEAD_SHA=$(git rev-parse HEAD)
   PLAN_OR_REQUIREMENTS: Task 2 from docs/imspeed/plans/deployment-plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
-  TASK_BRIEF: docs/imspeed/progress/task-brief.md
-  LEDGER: .IMSpeed/progress.md
+  TASK_BRIEF: .superpowers/sdd/task-2-brief.md
+  LEDGER: .superpowers/sdd/progress.md
 
 [Subagent returns]:
   Strengths: Clean architecture, real tests

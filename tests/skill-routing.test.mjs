@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const skill = (name) => readFile(new URL(`../skills/${name}/SKILL.md`, import.meta.url), "utf8");
+const repoFile = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("entry skill requires explicit IMSpeed role routing", async () => {
   const text = await skill("using-imspeed");
@@ -51,4 +52,43 @@ test("Task 6 dispatches use explicit IMSpeed roles and required handoff/routing 
 
   assert.match(await skill("requesting-code-review"), /progress[- ]ledger/i);
   assert.match(await skill("dispatching-parallel-agents"), /progress[- ]ledger/i);
+});
+
+test("Task 6 workflow artifacts use one .superpowers/sdd runtime contract", async () => {
+  const contractFiles = [
+    "skills/subagent-driven-development/SKILL.md",
+    "skills/subagent-driven-development/scripts/sdd-workspace",
+    "skills/subagent-driven-development/scripts/task-brief",
+    "skills/subagent-driven-development/scripts/review-package",
+    "skills/requesting-code-review/SKILL.md",
+    "references/handoff-contracts.md",
+  ];
+
+  for (const path of contractFiles) {
+    const text = await repoFile(path);
+    assert.doesNotMatch(text, /\.IMSpeed\//, `${path} retains an obsolete .IMSpeed scratch path`);
+    assert.match(text, /\.superpowers\/sdd/, `${path} does not name the canonical SDD workspace`);
+  }
+
+  const contract = await repoFile("references/handoff-contracts.md");
+  for (const artifact of [
+    ".superpowers/sdd/progress.md",
+    ".superpowers/sdd/task-<N>-brief.md",
+    ".superpowers/sdd/task-<N>-report.md",
+    ".superpowers/sdd/review-<base7>..<head7>.diff",
+  ]) assert.match(contract, new RegExp(artifact.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("implementation plan uses IMSpeed workflow skills for operational dispatch", async () => {
+  const plan = await repoFile("docs/imspeed/plans/2026-07-18-imspeed-plugin.md");
+  const executableLegacyDirections = plan
+    .split("\n")
+    .filter((line) => /superpowers:(?:subagent-driven-development|executing-plans)/.test(line))
+    .filter((line) => !/(?:historical|attribution|upstream|vendored)/i.test(line));
+
+  assert.deepEqual(executableLegacyDirections, []);
+  assert.match(
+    plan,
+    /REQUIRED SUB-SKILL: Use imspeed:subagent-driven-development .* imspeed:executing-plans/,
+  );
 });

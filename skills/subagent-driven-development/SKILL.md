@@ -209,6 +209,11 @@ Everything you paste into a dispatch prompt — and everything a subagent
 prints back — stays resident in your context for the rest of the session
 and is re-read on every later turn. Hand artifacts over as files:
 
+The runtime workspace is `.superpowers/sdd`: use `progress.md`,
+`task-<N>-brief.md`, `task-<N>-report.md`, and
+`review-<base7>..<head7>.diff` there as defined by
+`../../references/handoff-contracts.md`.
+
 - **Task brief:** before dispatching an implementer, run this skill's
   `scripts/task-brief PLAN_FILE N` — it extracts the task's full text to a
   uniquely named file and prints the path. Compose the dispatch so the
@@ -238,7 +243,7 @@ sequences — the single most expensive failure observed. Track progress in
 a ledger file, not only in todos.
 
 - At skill start, check for a ledger:
-  `cat "$(git rev-parse --show-toplevel)/.IMSpeed/sdd/progress.md"`. Tasks listed there
+  `cat "$(git rev-parse --show-toplevel)/.superpowers/sdd/progress.md"`. Tasks listed there
   as complete are DONE — do not re-dispatch them; resume at the first task
   not marked complete.
 - When a task's review comes back clean, append one line to the ledger in
