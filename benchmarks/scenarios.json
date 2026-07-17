@@ -1,5 +1,5 @@
 [
-  { "id": "small", "shape": "one or two files, complete behavior, focused tests" },
-  { "id": "medium", "shape": "multi-file UI and API integration with existing patterns" },
-  { "id": "integration", "shape": "cross-layer feature with persistence, failure handling, and regression tests" }
+  { "id": "small", "expectedRuns": 3, "runIds": ["run-1", "run-2", "run-3"], "shape": "one or two files, complete behavior, focused tests" },
+  { "id": "medium", "expectedRuns": 3, "runIds": ["run-1", "run-2", "run-3"], "shape": "multi-file UI and API integration with existing patterns" },
+  { "id": "integration", "expectedRuns": 3, "runIds": ["run-1", "run-2", "run-3"], "shape": "cross-layer feature with persistence, failure handling, and regression tests" }
 ]

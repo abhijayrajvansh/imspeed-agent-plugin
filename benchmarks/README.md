@@ -8,6 +8,14 @@ workflow. Record one JSON object per run with:
 `scenario`, `workflow`, `durationMs`, `inputTokens`, `outputTokens`,
 `testsPassed`, `criticalOpen`, and `importantOpen`.
 
+The benchmark run is complete only when every scenario declared in
+`benchmarks/scenarios.json` is represented for both `superpowers` and `imspeed`
+with the declared `expectedRuns`.
+
+When `runIds` are declared in a scenario entry, each run must include `runId` and
+must exactly match one declared run ID. Unexpected IDs, duplicates, or missing
+run IDs make the benchmark incomplete and fail qualification.
+
 Summarize results with:
 
 ```bash
