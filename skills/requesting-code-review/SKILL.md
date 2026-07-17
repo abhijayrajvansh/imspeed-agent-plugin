@@ -9,6 +9,10 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 
 **Core principle:** Review early, review often.
 
+Read `../../references/routing-policy.md` and `../../references/handoff-contracts.md`
+before dispatching. Use task-scoped dispatch for per-task reviews and final dispatch
+for whole-branch reviews, with a task brief and progress ledger entry attached.
+
 Task-scoped review uses `imspeed-task-reviewer` or its deep variant. Broad final
 review uses `imspeed-final-reviewer` or its deep variant. Review agents are
 read-only and consume prepared packages.
@@ -35,7 +39,15 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 **2. Dispatch code reviewer subagent:**
 
-Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md](code-reviewer.md)
+Dispatch one reviewer role explicitly:
+
+```text
+For task review: `imspeed-task-reviewer` or `imspeed-task-reviewer-deep`
+For final review: `imspeed-final-reviewer` or `imspeed-final-reviewer-deep`
+```
+
+Fill the template at [code-reviewer.md](code-reviewer.md) with the exact task
+brief, progress-ledger location, and handoff contract files.
 
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built
@@ -59,11 +71,13 @@ You: Let me request code review before proceeding.
 BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
 HEAD_SHA=$(git rev-parse HEAD)
 
-[Dispatch code reviewer subagent]
+[Dispatch `imspeed-task-reviewer`]
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
   PLAN_OR_REQUIREMENTS: Task 2 from docs/imspeed/plans/deployment-plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
+  TASK_BRIEF: docs/imspeed/progress/task-brief.md
+  LEDGER: .IMSpeed/progress.md
 
 [Subagent returns]:
   Strengths: Clean architecture, real tests

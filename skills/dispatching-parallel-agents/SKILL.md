@@ -8,6 +8,10 @@ description: Use when facing 2+ independent tasks that can be worked on without 
 Use `imspeed-explorer` for independent read-heavy investigations. Parallel
 code-writing requires a plan proving disjoint files, state, and dependencies.
 
+Before any dispatch, read `../../references/routing-policy.md` and
+`../../references/handoff-contracts.md`, then send an explicit role dispatch with
+task-brief and progress-ledger context.
+
 ## Overview
 
 You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
@@ -71,9 +75,9 @@ Each agent gets:
 Issue all three subagent dispatches in the same response — they run in parallel:
 
 ```text
-Subagent (general-purpose): "Fix agent-tool-abort.test.ts failures"
-Subagent (general-purpose): "Fix batch-completion-behavior.test.ts failures"
-Subagent (general-purpose): "Fix tool-approval-race-conditions.test.ts failures"
+Subagent (imspeed-implementer-standard): "Fix agent-tool-abort.test.ts failures"
+Subagent (imspeed-implementer-standard): "Fix batch-completion-behavior.test.ts failures"
+Subagent (imspeed-implementer-standard): "Fix tool-approval-race-conditions.test.ts failures"
 # All three run concurrently.
 ```
 

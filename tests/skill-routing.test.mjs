@@ -35,3 +35,20 @@ test("deterministic finish and verification stay with the coordinator", async ()
   assert.match(await skill("verification-before-completion"), /coordinator operation/i);
   assert.match(await skill("finishing-a-development-branch"), /coordinator operation/i);
 });
+
+test("Task 6 dispatches use explicit IMSpeed roles and required handoff/routing contracts", async () => {
+  const modifiedSkills = [
+    "requesting-code-review",
+    "dispatching-parallel-agents",
+  ];
+
+  for (const name of modifiedSkills) {
+    const text = await skill(name);
+    assert.doesNotMatch(text, /general-purpose/i);
+    assert.match(text, /references\/routing-policy\.md/);
+    assert.match(text, /references\/handoff-contracts\.md/);
+  }
+
+  assert.match(await skill("requesting-code-review"), /progress[- ]ledger/i);
+  assert.match(await skill("dispatching-parallel-agents"), /progress[- ]ledger/i);
+});
