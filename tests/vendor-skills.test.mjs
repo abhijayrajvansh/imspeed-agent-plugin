@@ -74,3 +74,29 @@ test("vendorSkills renames the entry skill and namespace", async () => {
     ),
   );
 });
+
+test("vendorSkills preserves the local executing-plans overlay", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "imspeed-vendor-overlay-"));
+  const source = path.join(root, "source");
+  const destination = path.join(root, "destination");
+  await mkdir(path.join(source, "skills", "using-superpowers"), { recursive: true });
+  await mkdir(path.join(source, "skills", "using-superpowers", "references"), { recursive: true });
+  await mkdir(path.join(source, "skills", "brainstorming"), { recursive: true });
+  await mkdir(path.join(destination, "executing-plans"), { recursive: true });
+  await writeFile(path.join(source, "skills", "using-superpowers", "SKILL.md"), "name: using-superpowers\n");
+  await writeFile(
+    path.join(source, "skills", "using-superpowers", "references", "codex-tools.md"),
+    "Codex tools\n",
+  );
+  await writeFile(
+    path.join(source, "skills", "brainstorming", "SKILL.md"),
+    "name: brainstorming\nIMSpeed routing uses imspeed-architect.\n",
+  );
+  await writeFile(
+    path.join(destination, "executing-plans", "SKILL.md"),
+    "name: executing-plans\nLocal overlay marker.\n",
+  );
+  await vendorSkills(source, destination, ["executing-plans", "using-superpowers", "brainstorming"]);
+  const overlay = await readFile(path.join(destination, "executing-plans", "SKILL.md"), "utf8");
+  assert.equal(overlay, "name: executing-plans\nLocal overlay marker.\n");
+});

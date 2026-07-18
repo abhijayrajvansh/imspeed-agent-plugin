@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,6 +9,7 @@ export const DEFAULT_SKILLS = [
   "receiving-code-review",
   "requesting-code-review",
   "subagent-driven-development",
+  "executing-plans",
   "systematic-debugging",
   "test-driven-development",
   "using-git-worktrees",
@@ -56,12 +57,39 @@ const transformEntrySkill = async (directory) => {
   await writeFile(target, text);
 };
 
+const pathExists = async (target) => {
+  try {
+    await access(target);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const assertSourceSkillForExecutionOverlay = async (source, skill) => {
+  if (!(await pathExists(source))) {
+    throw new Error(
+      `vendor overlay missing local source for ${skill}: expected source or existing destination directory`,
+    );
+  }
+};
+
 export async function vendorSkills(sourceRoot, destinationRoot, skills = DEFAULT_SKILLS) {
   await mkdir(destinationRoot, { recursive: true });
   for (const skill of skills) {
     const source = path.join(sourceRoot, "skills", skill);
     const destinationName = skill === "using-superpowers" ? "using-imspeed" : skill;
     const destination = path.join(destinationRoot, destinationName);
+
+    if (skill === "executing-plans") {
+      if (!(await pathExists(destination))) {
+        await assertSourceSkillForExecutionOverlay(source, skill);
+        await cp(source, destination, { recursive: true, force: true });
+        await transformTree(destination);
+      }
+      continue;
+    }
+
     await cp(source, destination, { recursive: true, force: true });
     await transformTree(destination);
     if (destinationName === "using-imspeed") {

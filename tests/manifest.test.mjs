@@ -27,6 +27,7 @@ test("all required IMSpeed skills are present", async () => {
     "brainstorming",
     "dispatching-parallel-agents",
     "finishing-a-development-branch",
+    "executing-plans",
     "receiving-code-review",
     "requesting-code-review",
     "subagent-driven-development",

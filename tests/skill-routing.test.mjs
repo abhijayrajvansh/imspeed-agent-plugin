@@ -79,6 +79,33 @@ test("Task 6 workflow artifacts use one .superpowers/sdd runtime contract", asyn
   ]) assert.match(contract, new RegExp(artifact.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
+test("executing-plans is routed as inline same-session batched execution", async () => {
+  const text = await skill("executing-plans");
+  assert.match(text, /same-session/i);
+  assert.match(text, /batch/);
+  assert.match(text, /imspeed-implementer-fast/);
+  assert.match(text, /imspeed-implementer-standard/);
+  assert.match(text, /imspeed-implementer-deep/);
+  assert.match(text, /imspeed-task-reviewer/);
+  assert.match(text, /imspeed-task-reviewer-deep/);
+  assert.match(text, /imspeed-final-reviewer/);
+  assert.match(text, /imspeed-final-reviewer-deep/);
+  assert.match(text, /\.superpowers\/sdd/);
+  assert.match(text, /RED[/\\]GREEN evidence/i);
+  assert.match(text, /human confirmation|human checkpoint/i);
+  assert.match(text, /Critical|Important/);
+  assert.match(text, /block/);
+  assert.doesNotMatch(text, /superpowers:executing-plans/);
+});
+
+test("writing-plans exposes inline execution as selectable while recommending subagent workflow", async () => {
+  const text = await skill("writing-plans");
+  assert.match(text, /Subagent-Driven \(recommended\)/);
+  assert.match(text, /Inline Execution/);
+  assert.match(text, /imspeed:executing-plans/);
+  assert.doesNotMatch(text, /superpowers:executing-plans/);
+});
+
 test("implementation plan uses IMSpeed workflow skills for operational dispatch", async () => {
   const plan = await repoFile("docs/imspeed/plans/2026-07-18-imspeed-plugin.md");
   const executableLegacyDirections = plan
