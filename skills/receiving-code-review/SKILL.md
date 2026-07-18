@@ -9,7 +9,7 @@ description: Use when receiving code review feedback, before implementing sugges
 
 Code review requires technical evaluation, not emotional performance.
 
-**Core principle:** Verify before implementing. Ask before assuming. Technical correctness over social comfort.
+**Core principle:** Verify before implementing. Recommend before assuming. Technical correctness over social comfort.
 
 ## The Response Pattern
 
@@ -17,7 +17,7 @@ Code review requires technical evaluation, not emotional performance.
 WHEN receiving code review feedback:
 
 1. READ: Complete feedback without reacting
-2. UNDERSTAND: Restate requirement in own words (or ask)
+2. UNDERSTAND: Restate requirement in own words and document the recommended interpretation
 3. VERIFY: Check against codebase reality
 4. EVALUATE: Technically sound for THIS codebase?
 5. RESPOND: Technical acknowledgment or reasoned pushback
@@ -33,7 +33,7 @@ WHEN receiving code review feedback:
 
 **INSTEAD:**
 - Restate the technical requirement
-- Ask clarifying questions
+- State the recommended interpretation when clarification is unavailable
 - Push back with technical reasoning if wrong
 - Just start working (actions > words)
 
@@ -41,10 +41,12 @@ WHEN receiving code review feedback:
 
 ```
 IF any item is unclear:
-  STOP - do not implement anything yet
-  ASK for clarification on unclear items
+  VERIFY the surrounding code and requirements
+  DOCUMENT the recommended interpretation
+  IMPLEMENT that recommendation
 
-WHY: Items may be related. Partial understanding = wrong implementation.
+WHY: Items may be related. A documented recommendation preserves momentum
+without hiding the assumption.
 ```
 
 **Example:**
@@ -52,15 +54,15 @@ WHY: Items may be related. Partial understanding = wrong implementation.
 your human partner: "Fix 1-6"
 You understand 1,2,3,6. Unclear on 4,5.
 
-❌ WRONG: Implement 1,2,3,6 now, ask about 4,5 later
-✅ RIGHT: "I understand items 1,2,3,6. Need clarification on 4 and 5 before proceeding."
+❌ WRONG: Implement 1,2,3,6 and leave 4,5 unresolved
+✅ RIGHT: "I understand items 1,2,3,6. For 4 and 5, I recommend [interpretation] because [evidence], and will proceed on that basis."
 ```
 
 ## Source-Specific Handling
 
 ### From your human partner
 - **Trusted** - implement after understanding
-- **Still ask** if scope unclear
+- **Use a documented recommendation** if scope is unclear
 - **No performative agreement**
 - **Skip to action** or technical acknowledgment
 
@@ -77,10 +79,10 @@ IF suggestion seems wrong:
   Push back with technical reasoning
 
 IF can't easily verify:
-  Say so: "I can't verify this without [X]. Should I [investigate/ask/proceed]?"
+  State the limitation and proceed with the safest documented recommendation.
 
 IF conflicts with your human partner's prior decisions:
-  Stop and discuss with your human partner first
+  Preserve the prior decision unless stronger evidence supports a change; document that recommendation.
 ```
 
 **your human partner's rule:** "External feedback - be skeptical, but check carefully"

@@ -1,13 +1,13 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
+description: Use before any implementation work - ensures all implementation occurs in an isolated Git worktree
 ---
 
 # Using Git Worktrees
 
 ## Overview
 
-Ensure work happens in an isolated workspace. Prefer your platform's native worktree tools. Fall back to manual git worktrees only when no native tool is available.
+Ensure all implementation happens in an isolated workspace. Prefer your platform's native worktree tools. Fall back to manual git worktrees only when no native tool is available.
 
 **Core principle:** Detect existing isolation first. Then use native tools. Then fall back to git. Never fight the harness.
 
@@ -38,11 +38,8 @@ Report with branch state:
 
 **If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in a normal repo checkout.
 
-Has the user already indicated their worktree preference in your instructions? If not, ask for consent before creating a worktree:
-
-> "Would you like me to set up an isolated worktree? It protects your current branch from changes."
-
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 2.
+Create an isolated worktree before implementation. Do not ask for confirmation
+and do not implement in the primary checkout.
 
 ## Step 1: Create Isolated Workspace
 

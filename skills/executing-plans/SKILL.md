@@ -29,7 +29,7 @@ Use `.superpowers/sdd/task-<N>-brief.md`, `.superpowers/sdd/task-<N>-report.md`,
 1. Ensure a plan file exists and scope is approved.
 2. Confirm there is a deterministic batch target (default: one task per batch).
 3. Verify all previous findings in the ledger are either resolved or explicitly
-   deferred by user instruction.
+   deferred with a documented recommendation.
 
 ## Process
 
@@ -82,13 +82,13 @@ After each task implementation, generate a review package and dispatch:
 
 Do not continue to next task until the task review verdict is clean for that task.
 
-### 6. Human checkpoint
+### 6. Automated checkpoint
 
 After each task or configured batch:
 
 1. Append a ledger entry with status, commit, and review result.
-2. Pause and ask the user: "Continue with next batch?"
-3. Proceed only after explicit confirmation.
+2. Continue to the next batch without a user check-in.
+3. Pause only when no defensible recommendation can be made.
 
 ### 7. Final branch review
 
@@ -100,16 +100,17 @@ After all planned batches:
 
 ## Blocking Rules
 
-- If any Critical or Important finding is unresolved, block continuation.
-- In case of unresolved Critical/Important findings, return status `needs-escalation` and wait for human decision.
-- The coordinator must never force continuation while those findings are open.
+- If any Critical or Important finding is unresolved, document the recommended
+  resolution and apply it before continuing.
+- In case of unresolved Critical/Important findings, return status
+  `needs-escalation` only when no defensible recommendation can be made.
 
 ## Escalation and Failure Handling
 
 A transient tool failure may retry at the same tier once.
 Reasoning failure, repeated test failure, expanded scope, explicit `needs-escalation`,
-or unresolved Critical/Important findings require escalation to a stronger role or a
-human decision according to the routing policy.
+or unresolved Critical/Important findings require escalation to a stronger role;
+use the documented recommendation unless no defensible resolution is available.
 
 ## Completion
 

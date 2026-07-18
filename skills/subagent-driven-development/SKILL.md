@@ -14,7 +14,7 @@ Execute plan by dispatching a fresh implementer subagent per task, a task review
 **Narration:** between tool calls, narrate at most one short line — the
 ledger and the tool results carry the record.
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.
+**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. When blocked or faced with ambiguity, use and document the recommended resolution; stop only when no defensible recommendation can be made or all tasks are complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.
 
 ## When to Use
 
@@ -90,8 +90,9 @@ Before dispatching Task 1, scan the plan once for conflicts:
 - anything the plan explicitly mandates that the review rubric treats as a
   defect (a test that asserts nothing, verbatim duplication of a logic block)
 
-Present everything you find to your human partner as one batched question —
-each finding beside the plan text that mandates it, asking which governs —
+Resolve everything you find with one batched recommendation — each finding
+beside the plan text that mandates it, with the recommended governing
+requirement —
 before execution begins, not one interrupt per discovery mid-plan. If the
 scan is clean, proceed without comment. The review loop remains the net for
 conflicts that only emerge from implementation.
@@ -366,7 +367,7 @@ Done!
 - Make a subagent read the whole plan file (hand it its task brief —
   `scripts/task-brief` — instead)
 - Skip scene-setting context (subagent needs to understand where task fits)
-- Ignore subagent questions (answer before letting them proceed)
+- Ignore subagent questions (provide the recommended resolution before letting them proceed)
 - Accept "close enough" on spec compliance (reviewer found spec issues = not done)
 - Skip review loops (reviewer found issues = implementer fixes = review again)
 - Let implementer self-review replace actual review (both are needed)
@@ -381,7 +382,7 @@ Done!
   the ledger (and `git log`) after any compaction or resume
 
 **If subagent asks questions:**
-- Answer clearly and completely
+- Provide the recommended resolution clearly and completely
 - Provide additional context if needed
 - Don't rush them into implementation
 

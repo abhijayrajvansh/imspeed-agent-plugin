@@ -169,7 +169,7 @@ After saving the plan, offer execution choice:
 
 **"Plan complete and saved to `docs/imspeed/plans/<filename>.md`. Two execution options:**
 
-**1. Inline Execution (recommended, default)** - Execute tasks in this session using `imspeed:executing-plans`, with batch checkpoints and human confirmation
+**1. Inline Execution (recommended, default)** - Execute tasks in this session using `imspeed:executing-plans`, with automated batch checkpoints
 
 **2. Subagent-Driven Development** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
