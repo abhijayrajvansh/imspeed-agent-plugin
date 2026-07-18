@@ -1,0 +1,59 @@
+[[agent]]
+name = "imspeed-explorer"
+model = "gpt-5.6-luna"
+model_reasoning_effort = "low"
+
+[[agent]]
+name = "imspeed-architect"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+
+[[agent]]
+name = "imspeed-architect-deep"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-planner"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-planner-deep"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+
+[[agent]]
+name = "imspeed-implementer-fast"
+model = "gpt-5.6-luna"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-implementer-standard"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-implementer-deep"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-task-reviewer"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-task-reviewer-deep"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+
+[[agent]]
+name = "imspeed-final-reviewer"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+[[agent]]
+name = "imspeed-final-reviewer-deep"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"

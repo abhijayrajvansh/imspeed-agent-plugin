@@ -1,3 +1,5 @@
+import { loadAgentDefaults } from "./agent-config.mjs";
+
 const resultContract = `Return Status: complete | blocked | needs-escalation; files changed or inspected; tests and RED/GREEN evidence when applicable; assumptions; risks and unresolved issues. Do not spawn child agents.`;
 const readOnly = "Do not modify the worktree, index, HEAD, branch, or user configuration.";
 const tdd = "Follow imspeed:test-driven-development. Write and observe a failing test before implementation, make the smallest passing change, refactor only while green, and report exact commands and results.";
@@ -11,7 +13,7 @@ const define = (name, description, model, effort, sandbox, instructions) => ({
   instructions: `${instructions} ${resultContract}`,
 });
 
-export const agentDefinitions = [
+const agentMetadata = [
   define(
     "imspeed-explorer",
     "Fast read-heavy repository exploration",
@@ -109,3 +111,20 @@ export const agentDefinitions = [
     `Audit security, concurrency, migrations, payments, destructive behavior, and major architecture using the prepared branch package. ${readOnly}`,
   ),
 ];
+
+export async function loadAgentDefinitions(configPath) {
+  const defaults = await loadAgentDefaults(configPath);
+  const defaultsByName = new Map(defaults.map((entry) => [entry.name, entry]));
+  return agentMetadata.map((definition) => {
+    const defaultsEntry = defaultsByName.get(definition.name);
+    return {
+      ...definition,
+      model: defaultsEntry.model,
+      effort: defaultsEntry.model_reasoning_effort,
+    };
+  });
+}
+
+export const agentDefinitions = await loadAgentDefinitions(
+  new URL("../config/imspeed-agent-defaults.toml", import.meta.url),
+);
