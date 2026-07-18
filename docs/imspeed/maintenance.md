@@ -38,7 +38,7 @@ directly during routine updates.
 
 - Role model-effort mappings: `config/imspeed-agent-defaults.toml`, or the
   local dashboard launched with `npm run config:ui` (the `imspeed-config` shell
-  alias launches it from the feature worktree).
+  alias launches it from the IMSpeed plugin checkout).
 - Fixed role metadata and generated-definition behavior:
   `src/agent-definitions.mjs`.
 - The dashboard intentionally updates only installed IMSpeed role profiles
