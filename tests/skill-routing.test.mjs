@@ -106,18 +106,26 @@ test("executing-plans is routed as inline same-session batched execution", async
 test("writing-plans must default to Inline Execution as option 1 and require explicit user choice", async () => {
   const text = await skill("writing-plans");
   assert.match(text, /1\.\s*Inline Execution/);
-  assert.match(text, /Inline Execution/);
-  assert.match(text, /\(recommended.*default|recommended|default\)/i);
-  assert.match(text, /imspeed:executing-plans/);
-  assert.match(text, /2\.\s*Subagent-Driven/);
-  assert.match(text, /Subagent-Driven/);
-  assert.match(text, /imspeed:subagent-driven-development/);
-  assert.match(text, /After saving the plan.*offer execution choice/i);
-  assert.match(text, /Which approach\?/i);
-  const inlineIndex = text.indexOf("Inline Execution");
-  const subagentIndex = text.indexOf("Subagent-Driven");
+  const executionSection = text.match(
+    /\*\*"Plan complete and saved to `docs\/imspeed\/plans\/<filename>.md`\. Two execution options:\*\*[\s\S]*?\*\*Which approach\?"\*\*/,
+  );
+  assert.ok(executionSection, "Missing execution options section in handoff");
+  const sectionText = executionSection[0];
+  const inlineOption = sectionText.match(
+    /\*\*1\.\s*Inline Execution \(recommended, default\)[^*]*\*\*/i,
+  );
+  const subagentOption = sectionText.match(
+    /\*\*2\.\s*Subagent-Driven(?:-Driven)? Development[^*]*\*\*/i,
+  );
+
+  assert.ok(inlineOption, "Missing Inline Execution option line");
+  assert.ok(subagentOption, "Missing Subagent-Driven option line");
+  const inlineIndex = sectionText.indexOf(inlineOption[0]);
+  const subagentIndex = sectionText.indexOf(subagentOption[0]);
   assert.ok(inlineIndex >= 0, "Missing Inline Execution in handoff prompt");
   assert.ok(subagentIndex >= 0, "Missing Subagent-Driven in handoff prompt");
+  assert.match(text, /imspeed:executing-plans/);
+  assert.match(text, /imspeed:subagent-driven-development/);
   assert.ok(
     inlineIndex < subagentIndex,
     "Inline Execution must be listed before Subagent-Driven",
