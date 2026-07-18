@@ -8,10 +8,10 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 Dispatch `imspeed-planner` with the approved design and global constraints to
 draft the implementation plan. Use `imspeed-planner-deep` only for multi-system
 or migration-heavy plans. The coordinator self-reviews the returned plan and
-writes the final plan document. Execution handoff defaults to
-`imspeed:subagent-driven-development`; `imspeed:executing-plans` is a
-real inline alternative for this session when the approved plan is safe for
-batched execution.
+writes the final plan document. Execution is now user-directed: the coordinator
+must ask for an explicit choice before dispatching either execution mode.
+`imspeed:executing-plans` is option 1 (recommended/default), and
+`imspeed:subagent-driven-development` is option 2.
 
 # Writing Plans
 
@@ -68,7 +68,7 @@ independently testable deliverable.
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use imspeed:subagent-driven-development (recommended) or imspeed:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use imspeed:executing-plans (recommended, default) or imspeed:subagent-driven-development to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -169,11 +169,13 @@ After saving the plan, offer execution choice:
 
 **"Plan complete and saved to `docs/imspeed/plans/<filename>.md`. Two execution options:**
 
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
+**1. Inline Execution (recommended, default)** - Execute tasks in this session using `imspeed:executing-plans`, with batch checkpoints and human confirmation
 
-**2. Inline Execution** - Execute tasks in this session using `imspeed:executing-plans`, with batch checkpoints and human confirmation
+**2. Subagent-Driven Development** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
 **Which approach?"**
+
+**Do not dispatch execution before the user chooses and confirms one option.**
 
 **If Subagent-Driven chosen:**
 - **REQUIRED SUB-SKILL:** Use imspeed:subagent-driven-development

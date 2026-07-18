@@ -103,12 +103,36 @@ test("executing-plans is routed as inline same-session batched execution", async
   assert.doesNotMatch(text, /superpowers:executing-plans/);
 });
 
-test("writing-plans exposes inline execution as selectable while recommending subagent workflow", async () => {
+test("writing-plans must default to Inline Execution as option 1 and require explicit user choice", async () => {
   const text = await skill("writing-plans");
-  assert.match(text, /Subagent-Driven \(recommended\)/);
+  assert.match(text, /1\.\s*Inline Execution/);
   assert.match(text, /Inline Execution/);
+  assert.match(text, /\(recommended.*default|recommended|default\)/i);
   assert.match(text, /imspeed:executing-plans/);
-  assert.doesNotMatch(text, /superpowers:executing-plans/);
+  assert.match(text, /2\.\s*Subagent-Driven/);
+  assert.match(text, /Subagent-Driven/);
+  assert.match(text, /imspeed:subagent-driven-development/);
+  assert.match(text, /After saving the plan.*offer execution choice/i);
+  assert.match(text, /Which approach\?/i);
+  const inlineIndex = text.indexOf("Inline Execution");
+  const subagentIndex = text.indexOf("Subagent-Driven");
+  assert.ok(inlineIndex >= 0, "Missing Inline Execution in handoff prompt");
+  assert.ok(subagentIndex >= 0, "Missing Subagent-Driven in handoff prompt");
+  assert.ok(
+    inlineIndex < subagentIndex,
+    "Inline Execution must be listed before Subagent-Driven",
+  );
+});
+
+test("writing-plans requires user confirmation before dispatching any execution path", async () => {
+  const text = await skill("writing-plans");
+  assert.match(text, /explicit/i);
+  assert.match(text, /user/i);
+  assert.match(text, /choose|selection|selection/i);
+  assert.match(text, /Do not dispatch execution/i);
+  assert.match(text, /must ask for an explicit choice/i);
+  assert.match(text, /dispatch/);
+  assert.match(text, /inline execution|subagent-driven/i);
 });
 
 test("implementation plan uses IMSpeed workflow skills for operational dispatch", async () => {
