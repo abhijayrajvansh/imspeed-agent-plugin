@@ -15,9 +15,9 @@ export const renderAgentToml = (definition) => [
   "",
 ].join("\n");
 
-export async function generateAgentProfiles(outputDirectory = path.resolve("agents")) {
+export async function generateAgentProfiles(outputDirectory = path.resolve("agents"), definitions = agentDefinitions) {
   await mkdir(outputDirectory, { recursive: true });
-  for (const definition of agentDefinitions) {
+  for (const definition of definitions) {
     await writeFile(path.join(outputDirectory, `${definition.name}.toml`), renderAgentToml(definition));
   }
 }

@@ -20,6 +20,21 @@ codex --profile imspeed -C /path/to/project
 Then ask: `Use IMSpeed to build this feature.` IMSpeed keeps Superpowers
 installed separately and routes substantive work through explicit named agents.
 
+## Configure agent defaults
+
+Launch the local configuration dashboard with:
+
+```bash
+npm run config:ui
+```
+
+Or, after loading the supplied shell alias, run `imspeed-config` from any
+terminal. Open `http://127.0.0.1:62266`, select each role's model and reasoning
+effort, then choose **Save & apply to Codex**. This updates the plugin defaults,
+regenerates the profiles, and applies them to `$CODEX_HOME/agents` (or
+`~/.codex/agents`). Start a new Codex thread before spawning agents to use the
+new selections.
+
 ## Verify
 
 ```bash

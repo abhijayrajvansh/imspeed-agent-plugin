@@ -8,6 +8,7 @@
   },
   "scripts": {
     "generate:agents": "node scripts/generate-agent-profiles.mjs",
+    "config:ui": "node scripts/config-ui.mjs",
     "validate": "node scripts/validate-plugin.mjs",
     "test": "bash tests/run-tests.sh"
   }

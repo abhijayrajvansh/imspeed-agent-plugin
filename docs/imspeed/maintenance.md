@@ -36,7 +36,14 @@ directly during routine updates.
 
 ## What to change for core behavior
 
-- Role and model-effort mappings: `src/agent-definitions.mjs`
+- Role model-effort mappings: `config/imspeed-agent-defaults.toml`, or the
+  local dashboard launched with `npm run config:ui` (the `imspeed-config` shell
+  alias launches it from the feature worktree).
+- Fixed role metadata and generated-definition behavior:
+  `src/agent-definitions.mjs`.
+- The dashboard intentionally updates only installed IMSpeed role profiles
+  under `$CODEX_HOME/agents`; do not manually edit marketplace caches or other
+  installed configuration files.
 - Routing policy and escalation rules: `references/routing-policy.md`
 - Workflow skill copy and role-specific behavior: `skills/` (including
   `skills/using-imspeed/` and references it uses)

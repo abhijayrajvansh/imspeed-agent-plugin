@@ -92,7 +92,8 @@ test("executing-plans is routed as inline same-session batched execution", async
   assert.match(text, /imspeed-final-reviewer-deep/);
   assert.match(text, /\.superpowers\/sdd/);
   assert.match(text, /RED[/\\]GREEN evidence/i);
-  assert.match(text, /human confirmation|human checkpoint/i);
+  assert.match(text, /automated checkpoint/i);
+  assert.doesNotMatch(text, /human confirmation|human checkpoint/i);
   assert.match(
     text,
     /\/skills\/subagent-driven-development\/scripts\/task-brief/,
