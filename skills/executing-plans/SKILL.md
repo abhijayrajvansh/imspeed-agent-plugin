@@ -45,7 +45,7 @@ Use `.superpowers/sdd/task-<N>-brief.md`, `.superpowers/sdd/task-<N>-report.md`,
 For each task in the batch, run:
 
 ```text
-./scripts/task-brief PLAN_FILE TASK_NUMBER /path/to/.superpowers/sdd/task-<N>-brief.md
+./skills/subagent-driven-development/scripts/task-brief PLAN_FILE TASK_NUMBER /path/to/.superpowers/sdd/task-<N>-brief.md
 ```
 
 Include the brief path in every dispatch.
