@@ -38,8 +38,8 @@ test("task 9 maintenance guide captures immutable source and update workflow", a
     "maintenance should keep marketplace source path relative as ./plugins/imspeed",
   );
   assert.ok(maintenance.includes("./plugins/imspeed"), "maintenance should include exact marketplace source token ./plugins/imspeed");
-  assert.ok(maintenance.includes("scripts/update_plugin_cachebuster.py"));
-  assert.ok(maintenance.includes("scripts/read_marketplace_name.py"));
+  assert.ok(maintenance.includes("npm run release:local"));
+  assert.ok(maintenance.includes("cachebuster"));
   assert.ok(maintenance.includes("codex plugin add imspeed@personal"));
   assert.ok(maintenance.includes("new Codex thread"));
 

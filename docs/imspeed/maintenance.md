@@ -19,16 +19,17 @@ installed copies in this repository.
 1. Edit files in `/Users/abhijayrajvansh/Desktop/imspeed`.
 2. Run `npm test` on the source checkout, then commit only when the change is
    verified.
-3. Sync changes into the personal marketplace mirror while excluding:
-   `.git`, `.worktrees`, and `.superpowers`.
-4. In `plugin-creator` tooling, run:
-   - `python3 scripts/update_plugin_cachebuster.py /Users/abhijayrajvansh/plugins/imspeed`
-   - `python3 scripts/read_marketplace_name.py`
-   - keep the marketplace source path relative as `./plugins/imspeed`.
-5. Reinstall the plugin from the reported marketplace name:
-   `codex plugin add imspeed@personal`
-6. Open a new Codex thread so IMSpeed's updated skills and agent configuration are
+3. Run `npm run release:local`. It validates the source, synchronizes it into
+   the personal marketplace mirror, updates the mirror manifest's cachebuster,
+   and runs `codex plugin add imspeed@personal`.
+4. Open a new Codex thread so IMSpeed's updated skills and agent configuration are
    loaded.
+
+`release:local` uses `rsync --delete` only on the known marketplace mirror at
+`/Users/abhijayrajvansh/plugins/imspeed`; files excluded from the release mirror
+include `.git`, `.worktrees`, `.superpowers`, `.IMSpeed`, `node_modules`, and
+`temp`. Set `IMSPEED_PLUGIN_MIRROR` and `IMSPEED_MARKETPLACE` only for another
+already-configured local release target.
 
 The cachebuster helper updates only the `+codex.<token>` suffix. Do not edit
 `marketplace.json`, installed plugin cache trees, or installed runtime config files

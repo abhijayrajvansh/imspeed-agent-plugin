@@ -41,6 +41,22 @@ new selections.
 npm test
 ```
 
+## Release the local plugin
+
+After changing IMSpeed, run one command from this source checkout:
+
+```bash
+npm run release:local
+```
+
+It validates the source, synchronizes it to the personal marketplace mirror at
+`~/plugins/imspeed`, generates a new Codex cache-busted plugin version, and
+reinstalls `imspeed@personal`. Start a new Codex task afterwards so it loads the
+released version.
+
+Use `IMSPEED_PLUGIN_MIRROR` and `IMSPEED_MARKETPLACE` only when releasing to a
+different already-configured local marketplace.
+
 Full performance qualification requires the controlled benchmark procedure in
 `benchmarks/README.md` and explicit approval for the model-token spend.
 
